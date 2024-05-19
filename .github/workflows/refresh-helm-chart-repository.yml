@@ -8,8 +8,26 @@ on:
 permissions:
   contents: write
 jobs:
-  build:
+  init:
     runs-on: ubuntu-latest
+    outputs:
+      publish-url: ${{ steps.resolve-publish-url.outputs.url }}
+    steps:
+      - name: "Resolve URL"
+        id: resolve-publish-url
+        run: |
+          echo "Resolving publish URL..."
+          repositoryName=$(basename ${{ github.repository }})
+          url=https://${{ github.repository_owner }}.github.io/${repositoryName}/
+          echo "URL resolved: $url"
+          echo "url=$url" >> $GITHUB_OUTPUT
+          
+  refresh:
+    runs-on: ubuntu-latest
+    needs: init
+    environment: 
+      name: live
+      url: ${{ needs.init.outputs.publish-url }}
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v4
@@ -22,7 +40,7 @@ jobs:
         with:
           path: repository
           ref: repository
-
+      
       - name: "Package, index and push chart"
         run: |
           echo "Begin repository processing, packaing and indexing..."
@@ -46,8 +64,7 @@ jobs:
 
           echo "Indexing repository..."
           cd $repositoryRootDir
-          repositoryName=$(basename ${{ github.repository }})
-          helm repo index --url https://${{ github.repository_owner }}.github.io/${repositoryName}/ .
+          helm repo index --url ${{ needs.init.outputs.publish-url }} .
           echo "Repository indexed."
           
           echo "Pushing changes to repository branch..."
