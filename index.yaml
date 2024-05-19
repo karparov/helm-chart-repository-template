@@ -1,3 +1,14 @@
 apiVersion: v1
-entries: {}
-generated: "2024-05-19T09:07:38.045322651Z"
+entries:
+  sample-chart:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-05-19T09:50:00.325036598Z"
+    description: A Helm chart for Kubernetes
+    digest: 5d99cbcf5f4ae32301e9c30c4317b6922a9a4d92e8a008724ecd16ad25ff8449
+    name: sample-chart
+    type: application
+    urls:
+    - https://karparov.github.io/helm-chart-repository-template/sample-chart-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-05-19T09:50:00.324556865Z"
