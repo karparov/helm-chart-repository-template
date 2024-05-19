@@ -1,0 +1,59 @@
+name: Refresh Helm Chart Repository
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          path: main
+          ref: main
+      
+      - name: Checkout repository branch
+        uses: actions/checkout@v4
+        with:
+          path: repository
+          ref: repository
+
+      - name: "Package, index and push chart"
+        run: |
+          echo "Begin repository processing, packaing and indexing..."
+          
+          cd repository
+          repositoryRootDir=`pwd`
+          cd ../main
+          mainRootDir=`pwd`
+
+          echo "Packaging charts..."
+          for subdir in "$mainRootDir"/*/; do
+              if [ -d "$subdir" ]; then
+                  echo "Processing and packaing chart in directory $subdir..."
+                  cd $repositoryRootDir
+                  helm package $subdir
+                  cd $mainRootDir
+                  echo "Chart in directory $subdir processed."
+              fi
+          done
+          echo "Charts packaged."
+
+          echo "Indexing repository..."
+          cd $repositoryRootDir
+          repositoryName=$(basename ${{ github.repository }})
+          helm repo index --url https://${{ github.repository_owner }}.github.io/${repositoryName}/ .
+          echo "Repository indexed."
+          
+          echo "Pushing changes to repository branch..."
+          git config --global user.email "HelmChartRepositoryBot@users.noreply.github.com"
+          git config --global user.name "Helm Chart Repository Bot"
+          git add .
+          git commit -m "Updating Helm Charts Repository"
+          git push
+          echo "Changes pushed."
