@@ -51,9 +51,17 @@
         .center {
             text-align: center;
         }
+        .command {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-family: monospace;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
+    <div id="repo-command" class="command" style="display: none;"></div>
     <h1>Helm Charts Repository</h1>
     <div id="chart-container">
         <!-- Content will be inserted here -->
@@ -80,9 +88,22 @@
             try {
                 const parsedData = jsyaml.load(yamlText);
                 console.log('YAML parsed successfully:', parsedData);
+                renderRepoCommand(parsedData);
                 renderCharts(parsedData);
             } catch (error) {
                 console.error('Error parsing YAML:', error);
+            }
+        }
+
+        function renderRepoCommand(data) {
+            const repoCommandContainer = document.getElementById('repo-command');
+            if (data.entries) {
+                const firstChartName = Object.keys(data.entries)[0];
+                const firstChart = data.entries[firstChartName][0];
+                const repoName = firstChart.name;
+                const repoUrl = firstChart.urls[0].replace(/\/[^/]+$/, '/');
+                repoCommandContainer.textContent = `helm repo add ${repoName} ${repoUrl}`;
+                repoCommandContainer.style.display = 'block';
             }
         }
 
@@ -93,10 +114,11 @@
                 return;
             }
             let htmlContent = '<table>';
-            htmlContent += '<tr><th>Name</th><th>Description</th><th>Version</th><th>App Version</th><th>URL</th><th>Created</th></tr>';
+            htmlContent += '<tr><th>Name</th><th>Description</th><th>Version</th><th>App Version</th><th>URL</th><th>Created</th><th>Install Command</th></tr>';
 
             for (const chart in data.entries) {
                 data.entries[chart].forEach(entry => {
+                    const installCommand = `helm install ${entry.name} ${entry.name} --version ${entry.version}`;
                     htmlContent += `
                         <tr>
                             <td>${entry.name}</td>
@@ -105,6 +127,7 @@
                             <td>${entry.appVersion}</td>
                             <td><a href="${entry.urls[0]}" target="_blank">Download</a></td>
                             <td>${new Date(entry.created).toLocaleString()}</td>
+                            <td><code>${installCommand}</code></td>
                         </tr>
                     `;
                 });
