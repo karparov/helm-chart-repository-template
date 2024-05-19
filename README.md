@@ -19,3 +19,22 @@
 10. After less than a minute the github pages endpoint will be active (navigate to the pages build and deployment job to find the URL).
 
 The generated repository UI will look exactly like https://karparov.github.io/helm-chart-repository-template/ but following updates on your newly generated repository
+
+## Adding or modifying Helm charts
+
+The following diagram explains the process of adding or modifying Helm Charts in the repository:
+
+```mermaid
+graph TD
+    A([Modify or add new chart]) -->|Push to main branch| B[Auto trigger 'Refresh Helm Chart Repository' workflow]
+    B -->|Packaging and indexing| C[Chart package available in repository branch]
+    C --> D[Chart installable via 'helm install' command]
+    C --> E[Auto trigger GitHub pages refresh]
+    E --> F[Changes visible in UI]
+
+    style B fill:#9ACD32
+    style C fill:#9ACD32
+    style D fill:#9ACD32
+    style E fill:#9ACD32
+    style F fill:#9ACD32
+```
