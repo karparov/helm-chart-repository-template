@@ -58,11 +58,17 @@
             font-family: monospace;
             margin-bottom: 20px;
         }
+        .explanation {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <div id="repo-command" class="command" style="display: none;"></div>
     <h1>Helm Charts Repository</h1>
+    <div class="explanation" id="explanation" style="display: none;">
+        <p>To use the below charts, add this repository to your Helm configuration:</p>
+        <div id="repo-command" class="command"></div>
+    </div>
     <div id="chart-container">
         <!-- Content will be inserted here -->
     </div>
@@ -103,13 +109,14 @@
 
         function renderRepoCommand(data) {
             const repoCommandContainer = document.getElementById('repo-command');
+            const explanationContainer = document.getElementById('explanation');
             if (data.entries) {
                 const firstChartName = Object.keys(data.entries)[0];
                 const firstChart = data.entries[firstChartName][0];
                 const repoUrl = firstChart.urls[0].replace(/\/[^/]+$/, '/');
                 const repoName = getRepoName(repoUrl);
                 repoCommandContainer.textContent = `helm repo add ${repoName} ${repoUrl}`;
-                repoCommandContainer.style.display = 'block';
+                explanationContainer.style.display = 'block';
             }
         }
 
