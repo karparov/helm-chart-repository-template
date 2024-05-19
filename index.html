@@ -83,6 +83,12 @@
             }
         }
 
+        function getRepoName(url) {
+            const urlParts = url.split('/');
+            // Return the second to last part of the URL as the repository name
+            return urlParts[urlParts.length - 2];
+        }
+
         function parseAndRenderYaml(yamlText) {
             console.log('Parsing YAML content...');
             try {
@@ -100,8 +106,8 @@
             if (data.entries) {
                 const firstChartName = Object.keys(data.entries)[0];
                 const firstChart = data.entries[firstChartName][0];
-                const repoName = firstChart.name;
                 const repoUrl = firstChart.urls[0].replace(/\/[^/]+$/, '/');
+                const repoName = getRepoName(repoUrl);
                 repoCommandContainer.textContent = `helm repo add ${repoName} ${repoUrl}`;
                 repoCommandContainer.style.display = 'block';
             }
@@ -118,7 +124,9 @@
 
             for (const chart in data.entries) {
                 data.entries[chart].forEach(entry => {
-                    const installCommand = `helm install ${entry.name} ${entry.name} --version ${entry.version}`;
+                    const repoUrl = entry.urls[0].replace(/\/[^/]+$/, '/');
+                    const repoName = getRepoName(repoUrl);
+                    const installCommand = `helm install ${entry.name} ${repoName}/${entry.name} --version ${entry.version}`;
                     htmlContent += `
                         <tr>
                             <td>${entry.name}</td>
