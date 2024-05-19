@@ -9,24 +9,47 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            color: #0056b3;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 12px;
         }
         th {
             background-color: #f4f4f4;
-        }
-        th, td {
             text-align: left;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
         }
         #chart-container {
             margin-top: 20px;
+        }
+        .center {
+            text-align: center;
         }
     </style>
 </head>
@@ -66,7 +89,7 @@
         function renderCharts(data) {
             const container = document.getElementById('chart-container');
             if (!data.entries) {
-                container.innerHTML = '<p>No Helm Charts available.</p>';
+                container.innerHTML = '<p class="center">No Helm Charts available.</p>';
                 return;
             }
             let htmlContent = '<table>';
