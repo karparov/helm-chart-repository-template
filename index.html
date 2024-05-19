@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helm Charts Repository</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        th, td {
+            text-align: left;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml/dist/js-yaml.min.js"/>
+</head>
+<body>
+    <h1>Helm Charts Repository</h1>
+    <div id="chart-container">
+        <!-- Content will be inserted here -->
+    </div>
+    <script>
+        async function fetchYaml() {
+            try {
+                const response = await fetch('index.yaml');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const yamlText = await response.text();
+                return yamlText;
+            } catch (error) {
+                console.error('Error fetching YAML file:', error);
+            }
+        }
+
+        function parseAndRenderYaml(yamlText) {
+            const parsedData = jsyaml.load(yamlText);
+            renderCharts(parsedData);
+        }
+
+        function renderCharts(data) {
+            const container = document.getElementById('chart-container');
+            let htmlContent = '<table>';
+            htmlContent += '<tr><th>Name</th><th>Description</th><th>Version</th><th>App Version</th><th>URL</th><th>Created</th></tr>';
+
+            for (const chart in data.entries) {
+                data.entries[chart].forEach(entry => {
+                    htmlContent += `
+                        <tr>
+                            <td>${entry.name}</td>
+                            <td>${entry.description}</td>
+                            <td>${entry.version}</td>
+                            <td>${entry.appVersion}</td>
+                            <td><a href="${entry.urls[0]}" target="_blank">Download</a></td>
+                            <td>${new Date(entry.created).toLocaleString()}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            htmlContent += '</table>';
+            container.innerHTML = htmlContent;
+        }
+
+        async function init() {
+            const yamlText = await fetchYaml();
+            if (yamlText) {
+                parseAndRenderYaml(yamlText);
+            }
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
