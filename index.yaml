@@ -3,12 +3,12 @@ entries:
   sample-chart:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-05-19T13:37:56.255720081Z"
+    created: "2024-05-20T16:13:32.46442063Z"
     description: A Helm chart for Kubernetes
-    digest: d0f3cb792524e43995de0b0aa120309bb35bdb0bff6da0a26edf8b513521bf26
+    digest: ea4135e5087b47d9b090bf4b400d7543ac2c833b1249a657aee4c98c25f2a4ef
     name: sample-chart
     type: application
     urls:
     - https://karparov.github.io/helm-chart-repository-template/sample-chart-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-19T13:37:56.255287395Z"
+generated: "2024-05-20T16:13:32.463945153Z"
