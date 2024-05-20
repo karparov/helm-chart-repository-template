@@ -1,10 +1,10 @@
 # Ready to use Helm Chart Repository Template
 
 ## :gem: What you will get
-1. Repository for Helm Charts source code - the "main" branch of this repository
-2. Repository for Helm Charts archives (packaged charts) - the "repository" branch of this repository
-3. UI, having instruction how to add the Helm Chart repository and how to install each of the available charts - hosted in github pages
-5. Continuous refresh of the Helm Chart repository and the respective UI triggered by a change in the source code branch (e.g. modifying or adding new chart)
+- **Repository for Helm Charts Source Code:** The main branch of the repository, where you can manage and update the source code for your Helm charts.
+- **Repository for Helm Charts Archives:** The repository branch of the repository, dedicated to storing the packaged Helm charts (archives).
+- **User Interface:** A hosted UI on GitHub Pages that provides instructions on how to add the Helm Chart repository and how to install each of the available charts.
+- **Continuous Refresh:** Automatic updates to the Helm Chart repository and the UI triggered by any changes in the source code branch (e.g., modifying or adding new charts).
 
 ## :white_check_mark: How to get it 
 1. Click "Use this template" in the upper right corner then "Create new repository"
@@ -31,10 +31,4 @@ graph TD
     C --> D[Chart installable via 'helm install' command]
     C --> E[Auto trigger GitHub pages refresh]
     E --> F[Changes visible in UI]
-
-    style B fill:#9ACD32
-    style C fill:#9ACD32
-    style D fill:#9ACD32
-    style E fill:#9ACD32
-    style F fill:#9ACD32
 ```
