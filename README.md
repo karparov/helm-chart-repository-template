@@ -1,4 +1,5 @@
 # Ready to use Helm Chart Repository Template
+:green_book: Detailed article covering the repository is available [here](https://medium.com/@karparov/helm-chart-repository-in-github-a-few-clicks-are-all-you-need-9183f7df2bde)
 
 ## :gem: What you will get
 - **Repository for Helm Charts Source Code:** The main branch of the repository, where you can manage and update the source code for your Helm charts.
